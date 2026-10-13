@@ -1,4 +1,4 @@
-# API Ramalan Zodiak ♎
+# Aplikasi API Ramalan Zodiak ♎
 
 Proyek Back End RESTful API sederhana yang dirancang untuk mengelola data ramalan zodiak (CRUD). Proyek ini berfokus murni pada pengembangan sisi **Back End** dan dikembangkan sebagai bagian dari **Digital Skill Fair 43.0 - Faculty of IT: Back End**.
 
