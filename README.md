@@ -1,6 +1,6 @@
 # Aplikasi Zodiac API ♎
 
-Backend RESTful API service yang dirancang untuk mengelola dan menyajikan data zodiak (seperti rentang tanggal, elemen, sifat, dan karakteristik zodiak). Proyek ini dikembangkan sebagai bagian dari **Digital Skill Fair 43.0 - Faculty of IT: Back End**.
+Backend RESTful API service yang dirancang untuk mengelola dan menyajikan data zodiak (seperti nama zodiak, berita baik, dan berita buruk). Proyek ini dikembangkan sebagai bagian dari **Digital Skill Fair 43.0 - Faculty of IT: Back End**.
 
 ---
 
