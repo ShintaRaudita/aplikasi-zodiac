@@ -1,38 +1,135 @@
-# Aplikasi Zodiac API ♎
+# API Ramalan Zodiak ♎
 
-Backend RESTful API service yang dirancang untuk mengelola dan menyajikan data zodiak (seperti nama zodiak, berita baik, dan berita buruk). Proyek ini dikembangkan sebagai bagian dari **Digital Skill Fair 43.0 - Faculty of IT: Back End**.
+Proyek Back End RESTful API sederhana yang dirancang untuk mengelola data ramalan zodiak (CRUD). Proyek ini berfokus murni pada pengembangan sisi **Back End** dan dikembangkan sebagai bagian dari **Digital Skill Fair 43.0 - Faculty of IT: Back End**.
 
 ---
 
 ## Deskripsi Proyek
-**Aplikasi Zodiac API** adalah layanan backend berbasis Java Spring Boot yang menyediakan antarmuka terstruktur bagi aplikasi klien untuk mengakses informasi zodiak. Aplikasi ini mengimplementasikan arsitektur *clean layered* (Controller-Repository-Model) untuk menjamin pemisahan tanggung jawab (*separation of concerns*), skalabilitas, serta kemudahan *maintenance*. Selain itu, proyek ini dilengkapi dengan dokumentasi OpenAPI/Swagger interaktif guna mempermudah eksplorasi dan pengujian endpoint secara langsung oleh developer.
-
----
-
-## Fitur Utama
-- **Zodiac Data Retrieval**: Menyediakan endpoint untuk mengambil daftar lengkap zodiak beserta rincian atributnya (karakteristik, rentang tanggal lahir, elemen, dll.).
-- **Zodiac Lookup / Query**: Endpoint khusus untuk melakukan pencarian atau *filtering* zodiak berdasarkan parameter tertentu (misal: ID atau tanggal).
-- **Interactive API Documentation (Swagger/OpenAPI)**: Tersedianya antarmuka Swagger UI untuk eksplorasi spesifikasi API, pengujian *request/response*, dan integrasi frontend tanpa perlu membaca kode sumber secara manual.
-- **RESTful Response Standards**: Mengembalikan respon data berformat JSON yang konsisten dengan kode status HTTP standar.
+**API Ramalan Zodiak** adalah layanan backend berbasis Java Spring Boot yang menyediakan antarmuka REST API untuk menyimpan, membaca, memperbarui, dan menghapus data ramalan zodiak. Aplikasi ini menyimpan data langsung ke database relasional (MySQL) dan menyediakan endpoint terstandarisasi untuk diuji menggunakan **Postman** maupun melalui dokumentasi **Swagger/OpenAPI**.
 
 ---
 
 ## Teknologi yang Digunakan
-- **Bahasa Pemrograman**: Java
-- **Framework Utama**: Spring Boot
-- **Data Access & Persistence**: Spring Data JPA / Repository Pattern
+- **Bahasa Pemrograman**: Java (JDK 21 atau yang kompatibel)
+- **Framework**: Spring Boot
+- **Database**: MySQL
 - **API Documentation**: OpenAPI 3 / Swagger UI (`springdoc-openapi`)
-- **Build & Dependency Management**: Apache Maven (Maven Wrapper `mvnw`)
-- **Testing**: JUnit & Spring Boot Test
+- **API Testing**: Postman
 
 ---
 
-## Arsitektur & Alur Kerja (Workflow)
-Aplikasi ini mengadopsi arsitektur berlapis (*multi-tier architecture*):
-1. **Client / Consumer**: Mengirimkan HTTP request melalui browser, Postman, atau Swagger UI.
-2. **Controller Layer (`ZodiacController`)**: Menangani routing endpoint, memvalidasi parameter input, dan memetakan respon HTTP.
-3. **Repository Layer (`ZodiacRepository`)**: Mengabstraksi komunikasi data dan operasi query terhadap entitas domain.
-4. **Model Layer (`Zodiac`)**: Mendefinisikan struktur skema dan representasi objek data zodiak.
-5. **JSON Response**: Data yang diproses diserialisasi menjadi format JSON dan dikirimkan kembali ke klien.
+## Skema Database
+Tabel yang digunakan dalam database memiliki struktur field sebagai berikut:
+
+| Nama Kolom | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | `BIGINT(10)` | Primary Key, Auto Increment |
+| `nama_zodiak` | `VARCHAR(100)` | Nama zodiak (misal: Aries, Libra, dll.) |
+| `berita_baik` | `VARCHAR(255)` | Ramalan/berita baik zodiak terkait |
+| `berita_buruk` | `VARCHAR(255)` | Ramalan/berita buruk zodiak terkait |
 
 ---
+
+## Endpoint API
+
+Base URL: `http://localhost:8080`
+
+| Method | Endpoint | Deskripsi |
+| :--- | :--- | :--- |
+| **GET** | `/api/zodiacs` | Mengambil semua daftar data zodiak |
+| **GET** | `/api/zodiacs/{id}` | Mengambil data zodiak berdasarkan ID |
+| **POST** | `/api/zodiacs` | Menambahkan data zodiak baru |
+| **PUT** | `/api/zodiacs/{id}` | Memperbarui data zodiak berdasarkan ID |
+| **DELETE** | `/api/zodiacs/{id}` | Menghapus data zodiak berdasarkan ID |
+
+---
+
+## Step-by-Step Menjalankan Aplikasi
+
+### 1. Persiapan Database
+1. Pastikan **XAMPP / MySQL Service** sudah aktif.
+2. Buka **phpMyAdmin** (`http://localhost/phpmyadmin`).
+3. Buat database baru (misalnya dengan nama `db_zodiac` atau sesuaikan dengan konfigurasi di proyek).
+4. Buat tabel sesuai struktur kolom di atas (atau biarkan Hibernate membuat tabel secara otomatis jika `spring.jpa.hibernate.ddl-auto=update` aktif).
+
+### 2. Konfigurasi Database di Proyek
+Buka file `src/main/resources/application.properties`, lalu pastikan konfigurasi koneksi database sudah sesuai:
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/db_zodiac?useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+### 3. Menjalankan Aplikasi
+Buka terminal / Command Prompt di folder proyek, lalu jalankan perintah berikut:
+
+- **Windows:**
+  ```cmd
+  mvnw.cmd spring-boot:run
+  ```
+- **Linux / macOS:**
+  ```bash
+  ./mvnw spring-boot:run
+  ```
+
+Tunggu hingga muncul log:
+```text
+Started AplikasiZodiacApplication in ... seconds
+```
+Aplikasi kini berjalan di `http://localhost:8080`.
+
+---
+
+## Pengujian API Menggunakan Postman
+
+### 1. Mengambil Semua Data (GET)
+- **Method:** `GET`
+- **URL:** `http://localhost:8080/api/zodiacs`
+- Klik **Send**.
+
+### 2. Menambahkan Data Baru (POST)
+- **Method:** `POST`
+- **URL:** `http://localhost:8080/api/zodiacs`
+- Pilih tab **Body** > **raw** > pilih tipe **JSON**.
+- Masukkan payload JSON:
+  ```json
+  {
+    "nama_zodiak": "Scorpio",
+    "berita_baik": "Finansial akan meningkat drastis minggu ini.",
+    "berita_buruk": "Hindari membuat keputusan terburu-buru saat emosi."
+  }
+  ```
+- Klik **Send**.
+
+### 3. Mengambil Data Berdasarkan ID (GET by ID)
+- **Method:** `GET`
+- **URL:** `http://localhost:8080/api/zodiacs/1`
+- Klik **Send**.
+
+### 4. Mengubah / Update Data (PUT)
+- **Method:** `PUT`
+- **URL:** `http://localhost:8080/api/zodiacs/1`
+- Pilih tab **Body** > **raw** > **JSON**, lalu masukkan perubahan:
+  ```json
+  {
+    "nama_zodiak": "Scorpio",
+    "berita_baik": "Proyek baru berjalan sukses dan lancar.",
+    "berita_buruk": "Jaga kesehatan fisik dan jangan begadang."
+  }
+  ```
+- Klik **Send**.
+
+### 5. Menghapus Data (DELETE)
+- **Method:** `DELETE`
+- **URL:** `http://localhost:8080/api/zodiacs/1`
+- Klik **Send**.
+
+---
+
+## Dokumentasi Swagger UI
+Selain menggunakan Postman, dokumentasi interaktif endpoint juga dapat diakses melalui browser:
+```text
+http://localhost:8080/swagger-ui.html
+```
