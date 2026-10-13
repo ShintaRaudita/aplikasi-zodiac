@@ -49,17 +49,19 @@ Base URL: `http://localhost:8080`
 ### 1. Persiapan Database
 1. Pastikan **XAMPP / MySQL Service** sudah aktif.
 2. Buka **phpMyAdmin** (`http://localhost/phpmyadmin`).
-3. Buat database baru (misalnya dengan nama `db_zodiac` atau sesuaikan dengan konfigurasi di proyek).
-4. Buat tabel sesuai struktur kolom di atas (atau biarkan Hibernate membuat tabel secara otomatis jika `spring.jpa.hibernate.ddl-auto=update` aktif).
+3. Buat database baru bernama `zodiac_db`.
+4. Buat tabel dan kolom sesuai dengan skema di atas. *(Catatan: Karena konfigurasi `ddl-auto` diset ke `validate`, tabel dan struktur kolom wajib dibuat manual terlebih dahulu di phpMyAdmin agar aplikasi tidak mengalami error saat startup)*.
 
 ### 2. Konfigurasi Database di Proyek
-Buka file `src/main/resources/application.properties`, lalu pastikan konfigurasi koneksi database sudah sesuai:
+Konfigurasi database pada `src/main/resources/application.properties` sudah disetel sebagai berikut:
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/db_zodiac?useSSL=false&serverTimezone=UTC
+spring.application.name=aplikasi-zodiac
+
+spring.datasource.url=jdbc:mysql://localhost:3306/zodiac_db
 spring.datasource.username=root
 spring.datasource.password=
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=validate
 ```
 
 ### 3. Menjalankan Aplikasi
